@@ -5,6 +5,8 @@ This is the source code to accompany the article at https://medium.com/@dylanm_a
 
 In repository, 
 
+```
 CD src
 dotnet build
 dotnet test
+```
