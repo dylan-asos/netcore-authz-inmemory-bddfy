@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Asos.DotNetCore.Auth.Api.Demo
 {
@@ -22,10 +23,10 @@ namespace Asos.DotNetCore.Auth.Api.Demo
 
             services.AddHttpClient<IOrderRetriever, OrderRetriever>(client => client.BaseAddress = new Uri("https://orders-api.com/"));
 
-            services.AddMvc();
+            services.AddMvc(x => x.EnableEndpointRouting = false);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
