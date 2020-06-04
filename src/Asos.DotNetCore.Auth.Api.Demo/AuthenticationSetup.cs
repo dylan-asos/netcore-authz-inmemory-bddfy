@@ -9,7 +9,7 @@ namespace Asos.DotNetCore.Auth.Api.Demo
 {
     public static class AuthenticationSetup
     {
-        public static void Initialize(IServiceCollection services, IConfiguration configuration)
+        public static void Initialize(IServiceCollection services)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 

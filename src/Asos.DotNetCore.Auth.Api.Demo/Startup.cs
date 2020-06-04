@@ -19,7 +19,7 @@ namespace Asos.DotNetCore.Auth.Api.Demo
 
         public void ConfigureServices(IServiceCollection services)
         {
-            AuthenticationSetup.Initialize(services, Configuration);
+            AuthenticationSetup.Initialize(services);
 
             services.AddHttpClient<IOrderRetriever, OrderRetriever>(client => client.BaseAddress = new Uri("https://orders-api.com/"));
 
