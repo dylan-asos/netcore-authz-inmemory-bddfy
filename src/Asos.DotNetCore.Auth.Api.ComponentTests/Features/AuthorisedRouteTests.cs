@@ -45,7 +45,7 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests.Features
                 .BDDfy();
         }
 
-        public void ACustomerTokenIsSelectedWithId(string customerId)
+        private void ACustomerTokenIsSelectedWithId(string customerId)
         {                    
             _token = ComponentContext
                 .TokenBuilder
@@ -55,7 +55,7 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests.Features
                 .BuildToken();
         }
 
-        public async Task AValidOrderResponseIsReturnedForTheCustomer(string customerId)
+        private async Task AValidOrderResponseIsReturnedForTheCustomer(string customerId)
         {
             var jsonContent = await _response.Content.ReadAsStringAsync();
 
@@ -64,16 +64,15 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests.Features
             Assert.True(_orderDetailResponse.Order.CustomerId == Convert.ToInt32(customerId));
         }
 
-        public async Task TheEndpointIsCalledForCustomer(string customerId)
+        private async Task TheEndpointIsCalledForCustomer(string customerId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"demo/route-based/{customerId}");
-
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token);
             
             _response = await ComponentContext.Client.SendAsync(request);
         }
 
-        public void TheResponseIs(HttpStatusCode ok)
+        private void TheResponseIs(HttpStatusCode ok)
         {
             Assert.AreEqual(ok, _response.StatusCode);
         }

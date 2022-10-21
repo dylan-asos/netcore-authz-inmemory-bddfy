@@ -15,8 +15,8 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests
         private string _audience = "https://subject.com";
         private TimeSpan _life = TimeSpan.FromHours(1);
         private DateTime _notBefore = DateTime.UtcNow;        
-        private readonly List<Claim> _claims = new List<Claim>();
-        private readonly JwtSecurityTokenHandler _securityTokenHandler = new JwtSecurityTokenHandler();
+        private readonly List<Claim> _claims = new();
+        private readonly JwtSecurityTokenHandler _securityTokenHandler = new();
       
         public BearerTokenBuilder IssuedBy(string issuer)
         {
@@ -83,25 +83,13 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests
 
         public BearerTokenBuilder WithLifetime(TimeSpan life)
         {
-            if (life == null)
-            {
-                throw new ArgumentException("Lifetime cannot be null", nameof(life));
-            }
-
             _life = life;
-
             return this;
         }
 
         public BearerTokenBuilder NotBefore(DateTime notBefore)
         {
-            if (notBefore == null)
-            {
-                throw new ArgumentException("Not before cannot be null", nameof(notBefore));
-            }
-
             _notBefore = notBefore;
-
             return this;
         }
     

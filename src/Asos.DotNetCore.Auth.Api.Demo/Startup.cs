@@ -6,36 +6,36 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Asos.DotNetCore.Auth.Api.Demo
+namespace Asos.DotNetCore.Auth.Api.Demo;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        Configuration = configuration;
+    }
 
-        public IConfiguration Configuration { get; }
+    public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            AuthenticationSetup.Initialize(services);
+    public void ConfigureServices(IServiceCollection services)
+    {
+        AuthenticationSetup.Initialize(services);
 
-            services.AddHttpClient<IOrderRetriever, OrderRetriever>(client => client.BaseAddress = new Uri("https://orders-api.com/"));
+        services.AddHttpClient<IOrderRetriever, OrderRetriever>(client =>
+            client.BaseAddress = new Uri("https://orders-api.com/"));
 
-            services.AddMvc(x => x.EnableEndpointRouting = false);
-        }
+        services.AddMvc(x => x.EnableEndpointRouting = false);
+    }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
-            else
-                app.UseHsts();
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+            app.UseDeveloperExceptionPage();
+        else
+            app.UseHsts();
 
-            app.UseStatusCodePages();
-            app.UseAuthentication();
-            app.UseMvc();
-        }
+        app.UseStatusCodePages();
+        app.UseAuthentication();
+        app.UseMvc();
     }
 }

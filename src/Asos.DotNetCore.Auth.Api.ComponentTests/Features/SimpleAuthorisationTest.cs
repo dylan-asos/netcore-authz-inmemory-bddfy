@@ -25,12 +25,12 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests.Features
                 .BDDfy();
         }
 
-        public void ATokenIsSelected()
+        private void ATokenIsSelected()
         {                    
             _token = ComponentContext.TokenBuilder.BuildToken();
         }
 
-        public async Task TheEndpointIsCalled()
+        private async Task TheEndpointIsCalled()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "demo/basic-authz");
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token);
@@ -38,7 +38,7 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests.Features
             _response = await ComponentContext.Client.SendAsync(request);
         }
 
-        public void TheResponseIs(HttpStatusCode ok)
+        private void TheResponseIs(HttpStatusCode ok)
         {
             Assert.AreEqual(ok, _response.StatusCode);
         }

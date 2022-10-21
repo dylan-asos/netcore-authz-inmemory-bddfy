@@ -1,34 +1,31 @@
 ﻿using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
-namespace Asos.DotNetCore.Auth.Api.Demo.Orders
+namespace Asos.DotNetCore.Auth.Api.Demo.Orders;
+
+public interface IOrderRetriever
 {
-    public interface IOrderRetriever
+    Task<Order> GetOrderForCustomer(int customerId);
+}
+
+public class OrderRetriever : IOrderRetriever
+{
+    private readonly HttpClient _client;
+
+    public OrderRetriever(HttpClient client)
     {
-        Task<Order> GetOrderForCustomer(int customerId);
+        _client = client;
     }
 
-    public class OrderRetriever : IOrderRetriever
+    public async Task<Order> GetOrderForCustomer(int customerId)
     {
-        private readonly HttpClient _client;
+        var requestUri = $"/customers/{customerId}/orders/orderId";
 
-        public OrderRetriever(HttpClient client)
-        {
-            _client = client;
-        }
+        var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+        var response = await _client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
 
-        public async Task<Order> GetOrderForCustomer(int customerId)
-        {
-            var requestUri = string.Format("/customers/{0}/orders/orderId", customerId);
-           
-            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
-
-            var response = await _client.SendAsync(request);
-
-            var content = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<Order>(content);
-        }
+        return JsonSerializer.Deserialize<Order>(content);
     }
 }
