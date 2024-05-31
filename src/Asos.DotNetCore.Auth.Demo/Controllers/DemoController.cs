@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Asos.DotNetCore.Auth.Api.Demo.Models;
-using Asos.DotNetCore.Auth.Api.Demo.Orders;
+﻿using Asos.DotNetCore.Auth.Demo.Models;
+using Asos.DotNetCore.Auth.Demo.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Asos.DotNetCore.Auth.Api.Demo.Controllers;
+namespace Asos.DotNetCore.Auth.Demo.Controllers;
 
 [Route("demo")]
 [ApiController]

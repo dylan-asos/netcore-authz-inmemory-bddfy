@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Asos.DotNetCore.Auth.Api.Demo.Orders;
+namespace Asos.DotNetCore.Auth.Demo.Orders;
 
 public class Order
 {

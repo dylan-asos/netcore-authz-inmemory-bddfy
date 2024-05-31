@@ -38,9 +38,9 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests.Features
             _response = await ComponentContext.Client.SendAsync(request);
         }
 
-        private void TheResponseIs(HttpStatusCode ok)
+        private void TheResponseIs(HttpStatusCode expected)
         {
-            Assert.AreEqual(ok, _response.StatusCode);
+            Assert.That(expected == _response.StatusCode);
         }
     }
 }

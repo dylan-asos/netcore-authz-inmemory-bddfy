@@ -1,47 +1,49 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
-using Asos.DotNetCore.Auth.Api.Demo;
-using Asos.DotNetCore.Auth.Api.Demo.Orders;
+﻿using Asos.DotNetCore.Auth.Demo.Orders;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Asos.DotNetCore.Auth.Api.ComponentTests
 {
-public class TestAuthenticationApi
-{
-    public TestAuthenticationApi()
+    public class TestAuthenticationApi : WebApplicationFactory<Program>
     {
-        var builder = new WebHostBuilder()
-            .UseStartup<Startup>()
-            .ConfigureTestServices(services =>
-            {
-                services.AddTransient<IOrderRetriever, MockOrderRetriever>();
-            })
-            .ConfigureServices(services =>
+        private const string HostUrl = "https://localhost:5811";
+        
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.ConfigureServices(services =>
             {
                 services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
-                        SignatureValidator = (token, parameters) => new JwtSecurityToken(token)
+                        ValidAudience = TestAuthorisationConstants.Audience,
+                        SignatureValidator = GetSignatureValidator
                     };
-                    options.Audience = TestAuthorisationConstants.Audience;
                     options.Authority = TestAuthorisationConstants.Issuer;
+                    options.MetadataAddress =
+                        "https://inmemory.microsoft.com/common/.well-known/openid-configuration";                    
                     options.BackchannelHttpHandler = new MockBackchannel();
-                    options.MetadataAddress = "https://inmemory.microsoft.com/common/.well-known/openid-configuration";
                 });
             });
 
-        var server = new TestServer(builder);
-
-        Client = server.CreateClient();
-        Client.BaseAddress = new Uri("http://localhost:5012");
+            builder.ConfigureTestServices(services =>
+            {
+                services.AddTransient<IOrderRetriever, MockOrderRetriever>();
+            });
+            
+            builder.UseUrls(HostUrl);
+        }
+        
+        private static JsonWebToken GetSignatureValidator(
+            string token, 
+            TokenValidationParameters validationParameters)
+        {
+            return new JsonWebToken(token);
+        }
     }
-
-    public HttpClient Client { get; set; }
-}
 }

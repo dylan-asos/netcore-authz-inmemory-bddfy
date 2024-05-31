@@ -1,4 +1,4 @@
-﻿namespace Asos.DotNetCore.Auth.Api.Demo.Models;
+﻿namespace Asos.DotNetCore.Auth.Demo.Models;
 
 public class ClaimDetailResponse
 {

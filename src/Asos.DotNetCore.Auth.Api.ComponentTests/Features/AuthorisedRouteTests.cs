@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Asos.DotNetCore.Auth.Api.Demo.Models;
+using Asos.DotNetCore.Auth.Demo.Models;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using TestStack.BDDfy;
@@ -61,20 +61,20 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests.Features
 
             _orderDetailResponse = JsonConvert.DeserializeObject<OrderDetailResponse>(jsonContent);
 
-            Assert.True(_orderDetailResponse.Order.CustomerId == Convert.ToInt32(customerId));
+            Assert.That(_orderDetailResponse.Order.CustomerId == Convert.ToInt32(customerId));
         }
 
         private async Task TheEndpointIsCalledForCustomer(string customerId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"demo/route-based/{customerId}");
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
             
             _response = await ComponentContext.Client.SendAsync(request);
         }
 
-        private void TheResponseIs(HttpStatusCode ok)
+        private void TheResponseIs(HttpStatusCode expected)
         {
-            Assert.AreEqual(ok, _response.StatusCode);
+            Assert.That(expected == _response.StatusCode);
         }
 
         private void TheResponseContainsClaim(string claimType, string claimValue)
@@ -82,7 +82,7 @@ namespace Asos.DotNetCore.Auth.Api.ComponentTests.Features
             var claimDetails = _orderDetailResponse.Claims.FirstOrDefault(claim =>
                 claim.ClaimType == claimType && claim.ClaimValue == claimValue);
 
-            Assert.IsNotNull(claimDetails);
+            Assert.That(claimDetails != null);
         }
     }
 }

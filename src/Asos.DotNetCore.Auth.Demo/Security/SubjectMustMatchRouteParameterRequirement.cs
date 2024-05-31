@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Asos.DotNetCore.Auth.Api.Demo.Security;
+namespace Asos.DotNetCore.Auth.Demo.Security;
 
 public class SubjectMustMatchRouteParameterRequirement : IAuthorizationRequirement
 {

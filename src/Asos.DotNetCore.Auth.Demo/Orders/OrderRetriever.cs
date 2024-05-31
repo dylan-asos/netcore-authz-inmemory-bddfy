@@ -1,8 +1,6 @@
-﻿using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
-namespace Asos.DotNetCore.Auth.Api.Demo.Orders;
+namespace Asos.DotNetCore.Auth.Demo.Orders;
 
 public interface IOrderRetriever
 {

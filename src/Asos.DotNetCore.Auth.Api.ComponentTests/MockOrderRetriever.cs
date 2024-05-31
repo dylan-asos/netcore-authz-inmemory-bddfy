@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Asos.DotNetCore.Auth.Api.Demo.Orders;
+using Asos.DotNetCore.Auth.Demo.Orders;
 
 namespace Asos.DotNetCore.Auth.Api.ComponentTests
 {

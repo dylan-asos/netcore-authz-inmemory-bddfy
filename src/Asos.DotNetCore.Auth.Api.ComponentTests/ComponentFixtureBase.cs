@@ -3,22 +3,23 @@
 namespace Asos.DotNetCore.Auth.Api.ComponentTests
 {
     [Parallelizable(ParallelScope.Fixtures)]
-    public class ComponentFixtureBase 
+    public class ComponentFixtureBase
     {
-        public ComponentTestContext ComponentContext;
+        private readonly TestAuthenticationApi _apiApplication = new();
+        protected readonly ComponentTestContext ComponentContext;
 
-        public ComponentFixtureBase()
+        protected ComponentFixtureBase()
         {
             ComponentContext = new ComponentTestContext
-                {
-                    Client = new TestAuthenticationApi().Client, 
+            {
+                Client = _apiApplication.CreateClient(), 
 
-                    TokenBuilder =
-                        new BearerTokenBuilder()
-                            .ForAudience(TestAuthorisationConstants.Audience)
-                            .IssuedBy(TestAuthorisationConstants.Issuer)
-                            .WithSigningCertificate(EmbeddedResourceReader.GetCertificate())                    
-                };
+                TokenBuilder =
+                    new BearerTokenBuilder()
+                        .ForAudience(TestAuthorisationConstants.Audience)
+                        .IssuedBy(TestAuthorisationConstants.Issuer)
+                        .WithSigningCertificate(EmbeddedResourceReader.GetCertificate())                    
+            };
         }
     }
 }
